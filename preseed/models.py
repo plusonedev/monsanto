@@ -26,7 +26,9 @@ class PreseedInstance(models.Model):
     hostname = models.CharField(max_length = 100)
     domain = models.CharField(max_length = 100)
     ntp_server = models.CharField(max_length = 100)
-    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.instance_id.upper()
     
