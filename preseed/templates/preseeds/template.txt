@@ -119,11 +119,11 @@ d-i passwd/root-password-again password r00tme
 #d-i passwd/root-password-crypted password [crypt(3) hash]
 
 # To create a normal user account.
-d-i passwd/user-fullname string Debian User
-d-i passwd/username string debian
+d-i passwd/user-fullname string Ansible User
+d-i passwd/username string ansible
 # Normal user's password, either in clear text
-#d-i passwd/user-password password insecure
-#d-i passwd/user-password-again password insecure
+d-i passwd/user-password password ESJ2d=%!VR%GQu#6YF54&g7Z=27x85
+d-i passwd/user-password-again password ESJ2d=%!VR%GQu#6YF54&g7Z=27x85
 # or encrypted using a crypt(3) hash.
 #d-i passwd/user-password-crypted password [crypt(3) hash]
 # Create the first user with the specified UID instead of the default.
@@ -157,7 +157,7 @@ d-i clock-setup/ntp-server string {{ instance.ntp_server }}
 # name must be given in traditional, non-devfs format (so e.g. /dev/sda
 # and not e.g. /dev/discs/disc0/disc).
 # For example, to use the first SCSI/SATA hard disk:
-#d-i partman-auto/disk string /dev/sda
+d-i partman-auto/disk string /dev/sda
 # In addition, you'll need to specify the method to use.
 # The presently available methods are:
 # - regular: use the usual partition types for your architecture
@@ -323,10 +323,10 @@ d-i apt-setup/contrib boolean true
 #tasksel tasksel/first multiselect standard, web-server, kde-desktop
 
 # Individual additional packages to install
-#d-i pkgsel/include string openssh-server build-essential
+d-i pkgsel/include string openssh-server build-essential
 # Whether to upgrade packages after debootstrap.
 # Allowed values: none, safe-upgrade, full-upgrade
-#d-i pkgsel/upgrade select none
+d-i pkgsel/upgrade select none
 
 # Some versions of the installer can report back on what software you have
 # installed, and what software you use. The default is not to report back,
@@ -428,3 +428,7 @@ d-i finish-install/reboot_in_progress note
 # packages and run commands in the target system.
 #d-i preseed/late_command string apt-install zsh; in-target chsh -s /bin/zsh
 
+d-i preseed/late_command string in-target mkdir -p /root/.ssh; \
+        in-target /bin/sh -c "echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJFHZ7XA1jrx7mxNIL4WWFfrlLjPgecBgWXCOFC3z2ECZHm48rhscnPkxK121j+3mjD5xAK/4GTB2p2Go9hN5YRJSVKG23K927veEdSyQ8p3I8y5xqxjg0d7SUjT6WYgjeahM+ZRrS2+fhhEirn2+EQW3QnnG3I+A7tweVcfkWjMsfJ072hr3CgM7tw6LN7Gx82gt13P9wx3WMGSUuJ/ffszzY9WdhGP2JSOJq/9E8qv6KvWjugr/YgAjUzIYUKeq/q7O4mAI0BOdleyLzblZamThDzxZW1m3BHIw3r4un8FFqJpyJ0/R2HmaMqd90oyXKL58uEiRxnuK9SjU3s0LH ansible@dev-ansible' >> /root/.ssh/authorized_keys"; \
+        in-target chown -R root:root /root/.ssh/
+d-i finish-install/reboot_in_progress note
