@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['monsanto.savantgroup.com']
 
 INSTALLED_APPS = (
     'preseed.apps.PreseedConfig',
+    'script.apps.ScriptConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

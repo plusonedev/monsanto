@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.views.generic import RedirectView
 
 urlpatterns = [
+    url(r'^scripts/', include('script.urls')),
     url(r'^preseeds/', include('preseed.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', RedirectView.as_view(url='/admin')),

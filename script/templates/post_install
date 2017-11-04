@@ -1,0 +1,18 @@
+#!/bin/ash
+
+auto lo eth0
+iface lo inet loopback
+
+iface eth0 inet static
+	address ###.###.###.###
+	netmask ###.###.###.###
+	gateway ###.###.###.###
+	dns-nameservers ###.###.###.###
+	
+d-i preseed/late_command string \
+	cd /target; \
+	wget http://DOMAIN.COM/path/post-install.sh; \
+	chmod +x ./post-install.sh; \
+	chroot ./ ./post-install.sh; \
+	rm -f ./post-install.sh
+
