@@ -7,10 +7,10 @@ from .models import PreseedInstance
 
 def detail(request, instance_id):
     instance = get_object_or_404(PreseedInstance, instance_id=instance_id.upper())
-    return render(request, 'preseeds/template.txt', {'instance': instance}, content_type="text/plain")
+    return render(request, 'stretch/template.txt', {'instance': instance}, content_type="text/plain")
    
 
 def post_boot_script(request, instance_id):
     instance = get_object_or_404(PreseedInstance, instance_id=instance_id.upper())
-    return render(request, 'preseeds/script.sh', {'instance': instance}, content_type="text/plain")
+    return render(request, 'stretch/script.sh', {'instance': instance}, content_type="text/plain")
 
