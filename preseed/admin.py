@@ -11,7 +11,7 @@ class PreseedInstanceAdmin(admin.ModelAdmin):
     preseed_url_field.short_description = 'Preseed Link'
     
     def script_url_field(self, obj):
-        return '<a href="%s%s%s" target="_blank">%s</a>' % ('/preseeds/script/', obj.instance_id, '/', 'view script')
+        return '<a href="%s%s%s" target="_blank">%s</a>' % ('/scripts/', obj.instance_id, '/', 'view script')
     
     script_url_field.allow_tags = True
     script_url_field.short_description = 'Post-Install Script'
