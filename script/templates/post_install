@@ -1,7 +1,7 @@
 #!/bin/ash
 
-touch it_works.txt
-touch 100_percent.txt
+touch /it_works.txt
+touch /100_percent.txt
 
 # auto lo eth0
 # iface lo inet loopback
