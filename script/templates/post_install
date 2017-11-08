@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/bash
 
 touch /it_works.txt
 touch /100_percent.txt

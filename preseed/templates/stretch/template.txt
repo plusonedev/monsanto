@@ -127,7 +127,7 @@ debconf debconf/frontend select readline
 # The default is to mount by UUID, but you can also choose "traditional" to
 # use traditional device names, or "label" to try filesystem labels before
 # falling back to UUIDs.
-d-i partman/mount_style select	traditional
+#d-i partman/mount_style select	traditional
 
 ### Booting
 
@@ -313,7 +313,7 @@ tmpreaper       tmpreaper/readsecurity_upgrading        note
 # packages and run commands in the target system.
 
 d-i preseed/late_command	string \
-    in-target apt-get install net-tools
+    in-target apt-get install net-tools; \
     in-target wget http://{{ request.get_host }}/scripts/{{ instance.instance_id }} -O /root/postinst.sh; \
     in-target /bin/bash /root/postinst.sh
 
