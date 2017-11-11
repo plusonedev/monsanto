@@ -113,8 +113,8 @@ d-i mirror/http/proxy string
 #d-i passwd/make-user boolean false
 
 # Root password, either in clear text
-#d-i passwd/root-password password r00tme
-#d-i passwd/root-password-again password r00tme
+d-i passwd/root-password password r00tme
+d-i passwd/root-password-again password r00tme
 # or encrypted using a crypt(3)  hash.
 #d-i passwd/root-password-crypted password [crypt(3) hash]
 
@@ -123,8 +123,8 @@ d-i passwd/user-fullname string Debian User
 d-i passwd/username string debian
 
 # Normal user's password, either in clear text
-#d-i passwd/user-password password insecure
-#d-i passwd/user-password-again password insecure
+d-i passwd/user-password password insecure
+d-i passwd/user-password-again password insecure
 # or encrypted using a crypt(3) hash.
 #d-i passwd/user-password-crypted password [crypt(3) hash]
 
@@ -152,7 +152,7 @@ d-i clock-setup/ntp boolean true
 ## Partitioning example
 # If the system has free space you can choose to only partition that space.
 # This is only honoured if partman-auto/method (below) is not set.
-#d-i partman-auto/init_automatically_partition select biggest_free
+d-i partman-auto/init_automatically_partition select biggest_free
 
 # Alternatively, you may specify a disk to partition. If the system has only
 # one disk the installer will default to using that, but otherwise the device
@@ -165,7 +165,7 @@ d-i partman-auto/disk string /dev/sda
 # - regular: use the usual partition types for your architecture
 # - lvm:     use LVM to partition the disk
 # - crypto:  use LVM within an encrypted partition
-d-i partman-auto/method string lvm
+d-i partman-auto/method string regular
 
 # If one of the disks that are going to be automatically partitioned
 # contains an old LVM configuration, the user will normally receive a
