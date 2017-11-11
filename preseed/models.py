@@ -28,7 +28,9 @@ class PreseedInstance(models.Model):
     ntp_server = models.CharField(max_length = 100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
+    apps = models.TextField(default = "")
+    
     def __str__(self):
         return self.instance_id.upper()
     
