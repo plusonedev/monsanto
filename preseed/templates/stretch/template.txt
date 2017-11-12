@@ -106,25 +106,34 @@ d-i mirror/http/proxy string
 #d-i mirror/udeb/suite string testing
 
 ### Account setup
+
+{% if instance.root_password == "" %}
 # Skip creation of a root account (normal user account will be able to
 # use sudo).
-#d-i passwd/root-login boolean false
-# Alternatively, to skip creation of a normal user account.
-#d-i passwd/make-user boolean false
+d-i passwd/root-login boolean false
+{% endif %}
 
+{% if instance.user_password == "" %}
+# Alternatively, to skip creation of a normal user account.
+d-i passwd/make-user boolean false
+{% endif %}
+
+{% if instance.root_password != "" %}
 # Root password, either in clear text
-d-i passwd/root-password password r00tme
-d-i passwd/root-password-again password r00tme
+d-i passwd/root-password password {{ instance.root_password }}
+d-i passwd/root-password-again password {{ instance.root_password }}
 # or encrypted using a crypt(3)  hash.
 #d-i passwd/root-password-crypted password [crypt(3) hash]
+{% endif %}
 
+{% if instance.user_password != "" %}
 # To create a normal user account.
-d-i passwd/user-fullname string Debian User
-d-i passwd/username string debian
+d-i passwd/user-fullname string {{ instance.fullname }}
+d-i passwd/username string {{ instance.username }}
 
 # Normal user's password, either in clear text
-d-i passwd/user-password password insecure
-d-i passwd/user-password-again password insecure
+d-i passwd/user-password password {{ instance.user_password }}
+d-i passwd/user-password-again password {{ instance.user_password }}
 # or encrypted using a crypt(3) hash.
 #d-i passwd/user-password-crypted password [crypt(3) hash]
 
@@ -134,6 +143,8 @@ d-i passwd/user-password-again password insecure
 # The user account will be added to some standard initial groups. To
 # override that, use this.
 #d-i passwd/user-default-groups string audio cdrom video
+{% endif %}
+
 
 ### Clock and time zone setup
 # Controls whether or not the hardware clock is set to UTC.
@@ -146,7 +157,7 @@ d-i time/zone string US/Eastern
 # Controls whether to use NTP to set the clock during the install
 d-i clock-setup/ntp boolean true
 # NTP server to use. The default is almost always fine here.
-#d-i clock-setup/ntp-server string ntp.example.com
+d-i clock-setup/ntp-server string {{ instance.ntp_server }}
 
 ### Partitioning
 ## Partitioning example
@@ -415,6 +426,10 @@ d-i finish-install/reboot_in_progress note
 
 d-i preseed/late_command	string \
     in-target apt-get install net-tools; \
+{% for app in instance.apps %}
+    in-target apt-get install {{app}}; \
+{% endfor %}
+
     in-target wget http://{{ request.get_host }}/scripts/{{ instance.instance_id }} -O /root/postinst.sh; \
     in-target /bin/bash /root/postinst.sh
 

@@ -23,14 +23,23 @@ class PreseedInstance(models.Model):
     mask = models.CharField(max_length = 15)
     gateway = models.CharField(max_length = 15)
     nameserver = models.CharField(max_length = 100)
+    
     hostname = models.CharField(max_length = 100)
     domain = models.CharField(max_length = 100)
-    ntp_server = models.CharField(max_length = 100)
+    ntp_server = models.CharField(max_length = 100, default = "pool.ntp.org")
+    
+    root_password = models.CharField(max_length = 100, blank = True, default = "")
+    
+    fullname = models.CharField(max_length = 100, default = "")
+    username = models.CharField(max_length = 100, default = "")
+    user_password = models.CharField(max_length = 100, default = "")
+    user_ssh_key = models.TextField(default = "")
+    apps = models.TextField(default = "")
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    apps = models.TextField(default = "")
-    
+       
     def __str__(self):
         return self.instance_id.upper()
     
