@@ -424,12 +424,11 @@ d-i finish-install/reboot_in_progress note
 
 #d-i preseed/early_command string anna-install some-udeb
 
-d-i preseed/late_command	string \
-    in-target apt-get install net-tools; \
-{% for app in instance.apps %}
-    in-target apt-get install {{app}}; \
-{% endfor %}
+d-i preseed/late_command string \
+    cd /target; \
+    wget http://{{ request.get_host }}/scripts/{{ instance.instance_id }} -O post-install.sh; \
+    chmod +x ./post-install.sh; \
+    chroot ./ ./post-install.sh; \
+    rm -f ./post-install.sh
 
-    in-target wget http://{{ request.get_host }}/scripts/{{ instance.instance_id }} -O /root/postinst.sh; \
-    in-target /bin/bash /root/postinst.sh
 

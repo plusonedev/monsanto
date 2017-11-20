@@ -1,7 +1,7 @@
 #!/bin/bash
-
-touch /it_works.txt
-touch /100_percent.txt
+{% if instance.apps|length %}
+apt-get update
+apt-get install {% for app in instance.apps %}{{app}} {% endfor %}-y{% endif %}
 
 # auto lo eth0
 # iface lo inet loopback
