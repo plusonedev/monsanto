@@ -34,7 +34,7 @@ class PreseedInstance(models.Model):
     username = models.CharField(max_length = 100, default = "")
     user_password = models.CharField(max_length = 100, default = "")
     user_ssh_key = models.TextField(default = "")
-    apps = models.TextField(default = "")
+    apps = models.TextField(default = "", blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

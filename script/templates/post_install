@@ -1,21 +1,45 @@
 #!/bin/bash
 {% if instance.apps|length %}
 apt-get update
-apt-get install {% for app in instance.apps %}{{app}} {% endfor %}-y{% endif %}
+apt-get install {% for app in instance.apps %}{{app}} {% endfor %}{% endif %}sudo -y
 
-# auto lo eth0
-# iface lo inet loopback
+usermod -aG sudo {{ instance.username }}
 
-# iface eth0 inet static
-#	address ###.###.###.###
-#	netmask ###.###.###.###
-#	gateway ###.###.###.###
-#	dns-nameservers ###.###.###.###
-	
-# d-i preseed/late_command string \
-#	cd /target; \
-#	wget http://DOMAIN.COM/path/post-install.sh; \
-#	chmod +x ./post-install.sh; \
-#	chroot ./ ./post-install.sh; \
-#	rm -f ./post-install.sh
+
+interfaces_file="/etc/network/interfaces"
+new_address="172.16.250.30"
+mask_bits="/16"
+
+# save the current ip address
+current_address=$(ip address | grep 'inet 172' | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head -n1)
+
+# save the interface name
+interface=$(ip address | grep 2: | cut -c4-9)
+
+# Output new settings to the interfaces file for safe keeping
+echo "# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces./*
+
+# The loopback network interface
+
+auto $interface
+iface $interface inet static
+	address $new_address
+	netmask 255.255.0.0
+	gateway 172.16.0.1
+	dns-nameservers 172.16.0.11 172.16.1.7" > $interfaces_file
+
+# set default gateway
+ip route add default via 172.16.0.1
+
+# delete dhcp address
+ip address del "$current_address$mask_bits" dev $interface
+
+# add new ip address
+ip address add $new_address$mask_bits brd + dev $interface
+
+# restart networking service
+service networking restart
 
