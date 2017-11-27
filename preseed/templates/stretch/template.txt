@@ -422,13 +422,6 @@ d-i finish-install/reboot_in_progress note
 #### Advanced options
 ### Running custom commands during the installation
 
-#d-i preseed/early_command string anna-install some-udeb
-
-d-i preseed/late_command string \
-    cd /target; \
-    wget http://{{ request.get_host }}/scripts/{{ instance.instance_id }} -O post-install.sh; \
-    chmod +x ./post-install.sh; \
-    chroot ./ ./post-install.sh; \
-    rm -f ./post-install.sh
-
+d-i preseed/late_command string in-target wget -P / http://{{ request.get_host }}/scripts/{{ instance.instance_id }} -O post-install.sh; \
+    in-target chmod +x /post-install.sh
 

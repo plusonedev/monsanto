@@ -3,8 +3,9 @@
 apt-get update
 apt-get install {% for app in instance.apps %}{{app}} {% endfor %}{% endif %}sudo -y
 
+# add sudo to new user
 usermod -aG sudo {{ instance.username }}
-
+echo "{{ instance.username }}	ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
 interfaces_file="/etc/network/interfaces"
 new_address="172.16.250.30"
@@ -40,6 +41,16 @@ ip address del "$current_address$mask_bits" dev $interface
 # add new ip address
 ip address add $new_address$mask_bits brd + dev $interface
 
+# add nameservers
+echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+
 # restart networking service
 service networking restart
 
+# Setup ssh for added user
+#mkdir /home/{{ instance.username }}/.ssh
+echo "{{ instance.user_ssh_key }}" >> /home/{{ instance.username }}/.ssh/authorized_keys
+
+chown {{ instance.username }}:{{ instance.username }} /home/{{ instance.username }}/.ssh/authorized_keys
+chmod 600 /home/{{ instance.username}}/.ssh/authorized_keys
+ 
